@@ -9,7 +9,7 @@ export default function Welcome({ currentUser }) {
         <h1>
             welcome, <span>{currentUser?.username}!</span>
         </h1>
-       <h3>por favor comienza a mensagiar.</h3>
+       <h3>por favor comienza a mensagear.</h3>
 
     </Container>
   )
