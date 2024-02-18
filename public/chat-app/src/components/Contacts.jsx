@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Logo from "../assets/react.svg";
+import Messages from "./Messages";
 
 export default function Contacts({ contacts, changeChat  }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
@@ -9,7 +10,7 @@ export default function Contacts({ contacts, changeChat  }) {
   useEffect(() => {
     const fetchData = async ()=> {
     const data = await JSON.parse(
-      localStorage.getItem('chat-app-user')
+      localStorage.getItem(import.meta.env.VITE_REACT_APP_LOCALHOST_KEY)
     );
     setCurrentUserName(data.username);
     setCurrentUserImage(data.avatarImage);
@@ -26,9 +27,10 @@ export default function Contacts({ contacts, changeChat  }) {
     <>
       {currentUserImage && currentUserImage && (
         <Container>
+           
           <div className="brand">
             <img src={Logo} alt="logo" />
-            <h3>snappy</h3>
+            <h3>YERCHAT</h3>
           </div>
           <div className="contacts">
             {contacts.map((contact, index) => {
@@ -51,7 +53,8 @@ export default function Contacts({ contacts, changeChat  }) {
                   </div>
                 </div>
               );
-            })}
+            })} 
+            <Messages/>
           </div>
           <div className="current-user">
             <div className="avatar">
@@ -60,12 +63,15 @@ export default function Contacts({ contacts, changeChat  }) {
                 alt="avatar"
               />
             </div>
+           
             <div className="username">
               <h2>{currentUserName}</h2>
             </div>
           </div>
+        
         </Container>
       )}
+      
     </>
   );
 }

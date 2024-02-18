@@ -7,6 +7,8 @@ import { allUsersRoute, host } from '../../utils/APIRoutes';
 import Welcome from '../components/Welcome';
 import ChatContainer from '../components/ChatContainer';
 import { io } from "socket.io-client";
+import GroupChatContainer from '../components/GroupGhatContainer';
+
 export default function Chat() {
   const socket = useRef();
   console.log(socket)
@@ -18,10 +20,10 @@ export default function Chat() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!localStorage.getItem("chat-app-user")) {
+        if (!localStorage.getItem(import.meta.env.VITE_REACT_APP_LOCALHOST_KEY)) {
           navigate("/login");
         } else {
-          setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
+          setCurrentUser(await JSON.parse(localStorage.getItem(import.meta.env.VITE_REACT_APP_LOCALHOST_KEY)));
         }
       } catch (error) {
        
@@ -67,14 +69,16 @@ export default function Chat() {
         currentUser={currentUser} 
         changeChat={handleChatChange}
         />
-        {
-          currentChat === undefined ?  (
-             <Welcome
-        currentUser={currentUser}  />
-          ) :(
-              <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
-          )}
-      
+    {
+  currentChat === undefined ? (
+    <Welcome currentUser={currentUser} />
+  ) : currentChat.isGroupChat ? (
+    <GroupChatContainer currentGroup={currentChat} currentUser={currentUser} socket={socket} />
+  ) : (
+    <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
+  )
+}
+
       </div>
     </Container>
   );

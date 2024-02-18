@@ -24,7 +24,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if(localStorage.getItem('chat-app-user')) {
+    if(localStorage.getItem(import.meta.env.VITE_REACT_APP_LOCALHOST_KEY)) {
       navigate('/')
     }
   },[]);
@@ -40,7 +40,7 @@ export default function Login() {
           toast.error(data.msg,toastOptions);
         }
         if(data.status === true) {
-          localStorage.setItem('chat-app-user',JSON.stringify(data.user));
+          localStorage.setItem(import.meta.env.VITE_REACT_APP_LOCALHOST_KEY,JSON.stringify(data.user));
           navigate("/");
         }
         

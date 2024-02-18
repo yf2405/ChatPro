@@ -15,7 +15,7 @@ console.log("currentChat" + currentChat)
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = JSON.parse(localStorage.getItem("chat-app-user"));
+        const data = JSON.parse(localStorage.getItem(import.meta.env.VITE_REACT_APP_LOCALHOST_KEY));
         const response = await axios.post(getAllMessageRoute, {
           from: data._id,
           to: currentChat._id,
@@ -37,7 +37,7 @@ console.log("currentChat" + currentChat)
     const getCurrentChat = async () => {
       if (currentChat) {
         await JSON.parse(
-          localStorage.getItem("chat-app-user")
+          localStorage.getItem(import.meta.env.VITE_REACT_APP_LOCALHOST_KEY)
         )._id;
       }
     };
@@ -46,7 +46,7 @@ console.log("currentChat" + currentChat)
 
   const handleSendMsg = async (msg) => {
     const data = await JSON.parse(
-      localStorage.getItem("chat-app-user")
+      localStorage.getItem(import.meta.env.VITE_REACT_APP_LOCALHOST_KEY)
     );
     socket.current.emit("send-msg", {
       to: currentChat._id,

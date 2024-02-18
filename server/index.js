@@ -1,8 +1,10 @@
 const express = require('express');
 const cors = require('cors');
+const URL = require('./config');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/useRoutes');
 const messageRoutes = require('./routes/messagesRoute');
+const groupRoutes = require('./routes/groupRoutes');
 const app = express();
 const socket = require("socket.io");
 require("dotenv").config();
@@ -12,6 +14,8 @@ app.use(express.json());
 
 app.use("/api/auth",userRoutes);
 app.use("/api/messages",messageRoutes);
+app.use("/api/groups", groupRoutes);
+
 
 mongoose.connect(process.env.MONGO_URL)
     .then(() => {
@@ -27,7 +31,7 @@ const server = app.listen(process.env.PORT, () => {
 
 const io = socket(server, {
     cors: {
-        origin: "*",
+        origin: URL,
         credentials: true,
     },
 });
@@ -40,9 +44,15 @@ io.on("connection", (socket) => {
         global.onlineUsers.set(userId, socket.id); 
     });
     socket.on("send-msg", data => {
+        console.log("Data recibida en el evento 'send-msg':", data);
         const sendUserSocket = global.onlineUsers.get(data.to); 
         if (sendUserSocket) {
             socket.to(sendUserSocket).emit("msg-recieve", data.msg);
         }
+    });
+    socket.on("send-group-msg", (data) => {
+        console.log("Mensaje grupal recibido:", data);
+        // Envía el mensaje a todos los usuarios conectados (grupo)
+        io.emit("group-msg", data);
     });
 });

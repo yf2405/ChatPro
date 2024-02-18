@@ -1,17 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
-import { sendMessageRoute } from "../../utils/APIRoutes";
+import Logo from "../assets/react.svg";
 
-export default function Messages() {
-  const [message, setMessage] = useState("");
-
-  
-
+export default function GroupContacts({ contacts, changeChat  }) {
+  const [currentUserName, setCurrentUserName] = useState(undefined);
+  const [currentUserImage, setCurrentUserImage] = useState(undefined);
+  const [currentSelected, setCurrentSelected] = useState(undefined);
+  useEffect(() => {
+    const fetchData = async ()=> {
+    const data = await JSON.parse(
+      localStorage.getItem('chat-app-user')
+    );
+    setCurrentUserName(data.username);
+    setCurrentUserImage(data.avatarImage);
+    
+  }
+  fetchData();
+}, []);
+   
+ 
   return (
-    <Container>
+    <>
+      {currentUserImage && currentUserImage && (
+        <Container>
+          <div className="brand">
+            <img src={Logo} alt="logo" />
+            <h3>snappy</h3>
+          </div>
           <div className="contacts">
-
+            
+              return (
+                <div
+             
+                >
                   <div className="avatar">
                     <img
                       src=""
@@ -19,18 +40,18 @@ export default function Messages() {
                     />
                   </div>
                   <div className="username">
-                    <h3>MIKE</h3>
+                    <h3>MANU</h3>
                   </div>
                 </div>
-              
-       
-  
-       
+              );
+            
+          </div>
          
-        
         </Container>
       )}
-
+    </>
+  );
+}
 const Container = styled.div`
   display: grid;
   grid-template-rows: 10% 75% 15%;

@@ -39,24 +39,23 @@ module,exports.getAllMessage = async (req,res,next) =>{
 };
 
 
-// module.exports.getAllMessage = async (req, res, next) => {
-//     try {
-//         Eliminamos la desestructuración de req.body, ya que no necesitamos usuarios específicos
-
+module.exports.getAllMessageGroup = async (req, res, next) => {
+    try {
+        const { from} = req.body;
 //         Consulta todos los mensajes sin restricciones de usuario
-//         const messages = await messageModel.find().sort({ updatedAt: 1 });
+         const messages = await messageModel.find().sort({ updatedAt: 1 });
 
 //         Mapea los mensajes para transformarlos en un nuevo array llamado projectMessages
-//         const projectMessages = messages.map((msg) => {
-//             return {
-//                 fromSelf: false, // Puedes ajustar esto según tus necesidades
-//                 message: msg.message.text,
-//             };
-//         });
+      const projectMessages = messages.map((msg) => {
+          return {
+            fromSelf: msg.sender.toString() === from, // Puedes ajustar esto según tus necesidades
+                message: msg.message.text,
+            };
+      });
 
 //         Responde a la solicitud con el array projectMessages convertido a formato JSON
-//         res.json(projectMessages);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
+        res.json(projectMessages);
+    } catch (error) {
+        next(error);
+    }
+};
