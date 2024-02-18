@@ -1,4 +1,4 @@
-export  const host = "http://localhost:3000";
+export  const host = import.meta.env.VITE_BACKEND_URL;
 const groupId = '123'; // ID del grupo
 export  const registerRoute = `${host}/api/auth/register`;
 export  const loginRoute = `${host}/api/auth/login`;
